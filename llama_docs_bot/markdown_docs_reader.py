@@ -45,6 +45,12 @@ class MarkdownDocsReader(BaseReader):
             if header_match:
                 # save the current text
                 if current_text.strip() != "":
+                    link_matches = re.findall(r"\[.*\]\(.*\)", current_text)
+                    links = []
+                    for link_match in link_matches:
+                        link_text = link_match.split("](")[0].replace("[", "")
+                        link_url = link_match.split("](")[1].replace(")", "")
+                        links.append(f"(link_text: {link_text}, link_url: f{link_url})")
                     markdown_docs.append(
                         Document(
                             text=current_text.strip(),
@@ -52,6 +58,7 @@ class MarkdownDocsReader(BaseReader):
                                 "File Name": filename, 
                                 "Content Type": "text",
                                 "Header Path": "/".join(header_stack),
+                                "Links": ", ".join(links),
                             },
                         )
                     )
@@ -98,6 +105,12 @@ class MarkdownDocsReader(BaseReader):
                         )
                     current_code_block = ""
                 elif code_match and current_text.strip() != "":
+                    link_matches = re.findall(r"\[.*\]\(.*\)", current_text)
+                    links = []
+                    for link_match in link_matches:
+                        link_text = link_match.split("](")[0].replace("[", "")
+                        link_url = link_match.split("](")[1].replace(")", "")
+                        links.append(f"(link_text: {link_text}, link_url: f{link_url})")
                     markdown_docs.append(
                         Document(
                             text=current_text.strip(),
@@ -105,6 +118,7 @@ class MarkdownDocsReader(BaseReader):
                                 "File Name": filename, 
                                 "Content Type": "text",
                                 "Header Path": "/".join(header_stack),
+                                "Links": ", ".join(links),
                             },
                         )
                     )
