@@ -1,19 +1,13 @@
 from typing import Callable, Optional
 
-from llama_index.bridge.pydantic import PrivateAttr
-from llama_index.indices.postprocessor.types import BaseNodePostprocessor
 from llama_index.utils import globals_helper
 from llama_index.schema import MetadataMode
 
-class LimitRetrievedNodesLength(BaseNodePostprocessor):
-    limit: int = 3000
-    _tokenizer: Callable = PrivateAttr()
+class LimitRetrievedNodesLength:
 
     def __init__(self, limit: int = 3000, tokenizer: Optional[Callable] = None):
         self._tokenizer = tokenizer or globals_helper.tokenizer
-        super().__init__(
-            limit=limit,
-        )
+        self.limit = limit
 
     def postprocess_nodes(self, nodes, query_bundle):
         included_nodes = []
